@@ -31,7 +31,7 @@ function Tools.concat_tables(input_table_1, input_table_2, remove_duplicates)
   return result
 end
 
-function Tools.print_table(input_table)
+function Tools.print_table(input_table, table_name)
   print('Print Table')
   if Tools.is_table(input_table) then
     print("  Input Table: " .. (input_table.__name or "No Name Given"))
@@ -46,7 +46,18 @@ function Tools.print_table(input_table)
       end
     end
   else
-    print((type(input_table) .. ': "' .. input_table .. '"'or "No Name Given") .. " is not a table")
+    local is_table_name = (input_table == table_name)
+    if is_table_name then
+      print('This is a table name')
+    end
+    local input_type = tostring(type(input_table))
+    local error_string = string.format([[
+    -----------------------------------
+    '%s' of type '%s' is not a table
+    -----------------------------------]], 
+    input_table, input_type)
+    
+    print(error_string)
   end
   print('End Print Table \n' )
 end
@@ -84,12 +95,8 @@ function Tools.remove_item(input_to_remove, input_table)
 end
 
 function Tools.print_all_tables(input_table)
-  local initial_subtables = Tools.get_subtables(input_table)
-  initial_subtables.__name = 'Initial Subtables'
-  Tools.print_table(initial_subtables)
-
-  local subtable_list = { __name = 'Subtable List' }
-  subtable_list = Tools.concat_tables(subtable_list, initial_subtables)
+  local subtable_list = input_table
+  subtable_list .__name = 'Subtable List' 
 
   local subtable_start_count = Tools.table_length(subtable_list)
   local subtable_last_count = subtable_start_count
@@ -114,10 +121,7 @@ function Tools.print_all_tables(input_table)
   end
 
   for k, v in pairs(subtable_list) do
-    Tools.print_table(v)
+    Tools.print_table(v, subtable_list.__name)
   end
-
 end
-
-
 return Tools

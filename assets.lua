@@ -56,5 +56,5 @@ local function load_assets()
 end
 
 load_assets()
-T.print_all_tables(Assets.Shapes)
+T.print_all_tables(Assets.Shapes, Assets.Shapes.__name)
 return Assets
