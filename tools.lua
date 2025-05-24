@@ -41,14 +41,14 @@ function Tools.print_table(input_table)
         print(subtable)
       else
         if v ~= input_table.__name then
-          print(' test' , k, v)
+          print('  ' .. tostring(k) .. tostring(v))
         end
       end
     end
   else
-    print((table_name or "No Name Given") .. "is not a table")
+    print((type(input_table) .. ': "' .. input_table .. '"'or "No Name Given") .. " is not a table")
   end
-  print('End Print Table')
+  print('End Print Table \n' )
 end
 
 function Tools.get_subtables(input_table)
@@ -93,12 +93,10 @@ function Tools.print_all_tables(input_table)
 
   local subtable_start_count = Tools.table_length(subtable_list)
   local subtable_last_count = subtable_start_count
-  print('Subtable Start Count: ' .. subtable_start_count)
 
   local has_more_tables = true
 
   while has_more_tables do
-    local result_tables = {__name = "Result Tables"}
     for table_name, subtable in pairs(subtable_list) do
       if Tools.is_table(subtable) then
         local loop_subtables = Tools.get_subtables(subtable)
@@ -110,15 +108,14 @@ function Tools.print_all_tables(input_table)
           break
         else
           subtable_last_count = subtable_loop_count
-          print('more tables to go')
         end
       end
     end
   end
 
-for k, v in pairs(subtable_list) do
-  Tools.print_table(v)
-end
+  for k, v in pairs(subtable_list) do
+    Tools.print_table(v)
+  end
 
 end
 
