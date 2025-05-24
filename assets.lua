@@ -1,5 +1,5 @@
 local T = require('tools')
-local Assets = {}
+local Assets = {__name = 'Assets'}
 
 -- Built in string:Match % maies . literal, $ looks at end of the string
 local function check_for_PNG_ext(file_name)
@@ -25,7 +25,7 @@ local function load_assets()
     local category_info = love.filesystem.getInfo(category_path)
     -- Checks to make sure category info is not nil and that the type is a directory
     if category_info and category_info.type == 'directory'then
-      Assets[category] = {}
+      Assets[category] = { __name = category}
       -- All files in current category directory
       local files = love.filesystem.getDirectoryItems(category_path)
       -- Used to print number of files loaded into assets by category
@@ -40,7 +40,7 @@ local function load_assets()
             local asset_name = remove_PNG_ext(file)
 
             Assets[category][asset_name] ={
-              name = asset_name,
+              __name = asset_name,
               sprite = sprite,
               width = sprite:getWidth(),
               height = sprite:getHeight()
@@ -56,4 +56,6 @@ local function load_assets()
 end
 
 load_assets()
+T.print_table(Assets)
+T.print_table(Assets.Shapes)
 return Assets
